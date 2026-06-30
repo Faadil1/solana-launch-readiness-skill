@@ -87,10 +87,57 @@ LAUNCH_READY
 No BLOCKERs. No unresolved HIGH risks.
 ```
 
+## Signature Example
+
+```text
+> /launch-check
+
+Detected launch context: MAINNET_WITH_FUNDS
+
+Verdict: NOT_LAUNCH_READY
+
+BLOCKER A1 — Upgrade authority is a hot wallet.
+Fix: solana program set-upgrade-authority <PROGRAM_ID> --new-upgrade-authority <SQUADS_MULTISIG_ADDRESS>
+
+BLOCKER C1 — Production RPC is api.mainnet-beta.solana.com.
+Fix: set RPC_URL to a dedicated Helius/Triton/QuickNode endpoint before launch.
+
+Next Fix:
+Move upgrade authority away from a hot wallet before any funded mainnet launch.
+```
+
 ## Commands
 
 - **`/launch-check`** — runs the full verdict flow: classifies launch context, loads only the relevant domain modules, evaluates applicable criteria, and returns one of the three verdicts above with named BLOCKERs and HIGH risks.
 - **`/fix-blockers`** — takes the most recent `/launch-check` result and produces an ordered fix plan, pulling exact commands from the remediation guide. Requires a prior `/launch-check` run.
+
+## Verified
+
+Remote installer tested from GitHub raw:
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/Faadil1/solana-launch-readiness-skill/main/install.sh)
+```
+
+Verified result:
+
+```text
+Installed solana-launch-readiness to ~/.claude/skills/solana-launch-readiness
+Available commands: /launch-check, /fix-blockers
+PASS_MAIN
+```
+
+Cloud sanity harness:
+
+```bash
+./tests/cloud-sanity.sh
+```
+
+Verified result:
+
+```text
+ALL CLOUD SANITY CHECKS PASSED
+```
 
 ## Rule
 
